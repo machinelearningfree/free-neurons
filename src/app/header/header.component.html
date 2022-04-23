@@ -3,15 +3,17 @@
     src="../../assets/Planta_de_circuito-removebg-preview.png"
     alt="Logo da empresa"
     class="header-logo"
+    [routerLink]="''"
   />
   <ul class="header-menu">
-    <li>Sobre</li>
-    <li>Perceptron</li>
-    <li>MPL</li>
-    <li>Feedforward</li>
-    <li>Regressão Linear</li>
+    <li [routerLink]="''">Sobre</li>
+    <li [routerLink]="'binary-classification'">Classificação Binária</li>
+    <li [routerLink]="'mlp'">MPL</li>
+    <li [routerLink]="'linear-regression'">Regressão Linear</li>
   </ul>
-  <img src="../../assets/Planta_de_circuito__1_-removebg-preview.png" alt="logo do github" 
-  class="header-github"
+  <img
+    src="../../assets/Planta_de_circuito__1_-removebg-preview.png"
+    alt="logo do github"
+    class="header-github"
   />
 </header>
