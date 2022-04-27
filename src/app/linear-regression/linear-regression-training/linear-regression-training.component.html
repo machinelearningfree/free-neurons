@@ -1,0 +1,41 @@
+<div>
+  <canvas #regressionLinear></canvas>
+</div>
+<main>
+  <h2>Área reservada para treinamento</h2>
+  <form action="" [formGroup]="formTraining">
+    <label for="">Interações</label>
+    <input type="number" formControlName="epochs" />
+
+    <label for="">Valor da amostra</label>
+    <input type="number" formControlName="variable" />
+    <p>
+      O resultado do treinamento é:{{ resultTraining }}
+
+      <span *ngIf="resultTraining"
+        >O resultado é satisfatório. Deseja treinar mais uma vez
+      </span>
+    </p>
+
+    <input
+      type="file"
+      accept=".csv"
+      (change)="fileSelect($event)"
+      formControlName="file"
+    />
+    <p *ngIf="samples">{{ samples }} os números de amostra desse arquivo</p>
+    <button [disabled]="!formTraining.valid" (click)="learnLinear()">
+      Training
+    </button>
+  </form>
+
+  <form action="">
+    <h2>Área reservada para colher os resultados</h2>
+    <label for="">Interações</label>
+    <input type="text" name="" id="" />
+
+    <label for="">Valor da variável independente</label>
+    <input type="text" name="" id="" />
+    <p>O resultado é: {{ result }}</p>
+  </form>
+</main>

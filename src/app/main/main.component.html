@@ -1,1 +1,176 @@
-<h2>Sejam </h2>
+<h2>
+  Bem-vindos ao Free-Neurons, um projeto universitário open-source para os
+  amantes de IA
+</h2>
+<h3>1 - Uma Simples introdução sobre ao projeto</h3>
+
+<p class="firt-paragraph">
+  Atualmente, a utilização do machine learning vem crescendo em níveis
+  exponenciais; grandes empresas vêm utilizando técnicas de inteligência
+  artificial, sejam para classificação ou predição, em seus ambientes de
+  trabalho. Há no mercado inúmeros softwares capazes de reconhecer rostos,
+  classificar objetos, serem treinados para distinguir determinado tipo de
+  padrão de dados. Tudo isso é possível pelo crescimento do volume,
+  disponibilidade e variedade de dados, e o alto poderio computacional [1]. A
+  chegada de novas tecnologias sempre traz consigo a necessidade de
+  profissionais qualificados que contribuam no mercado, implementando-as; e no
+  ambiente acadêmico, fomentando estudos sobre a área em questão. Em
+  contrapartida com o vasto crescimento do machine learning, há a carência de
+  ferramentas disponíveis tanto fora como dentro do ambiente acadêmico que
+  possibilite o conhecimento introdutório dessa crescente tecnologia. Com
+  intuito de fornecer uma interface fácil de ser manipulada para uso educacional
+  dessa nova tecnologia, foi desenvolvido esse projeto.
+</p>
+
+<p class="second-paragraph">
+  O projeto Free-Neurons tem como principal objetivo criar uma ferramenta
+  educacional, a partir de uma interface web, que possibilite, de forma lúdica,
+  o conhecimento introdutório de como funciona o aprendizado de máquina. Ele
+  integra um sistema WEB, desenvolvido em Angular, um framework JavaScript capaz
+  de criar aplicações front-end robustas, com inúmeras dependências instaladas:
+  o TensorFlowJs, biblioteca responsável pela implementação dos algoritmos
+  responsáveis pela realização da predição e classificação dos dados; o ChartJs,
+  uma outra biblioteca que terá a função de implementar os gráficos na tela e o
+  Material Design. Além disso, sua interface é composta por três abas, são elas:
+  “Sobre”, “Regressão Linear” e a “Classificação Binária”.
+</p>
+
+<P class="third-paragraph"
+  >Optou-se por hospeda-ló na plataforma Netlify, um serviço que permite
+  hospedar sites estáticos; e deixar o código aberto no sistema de versionamento
+  de código remoto, o GitHub, com o intuito de transforma-ló em um projeto
+  open-source, podendo ser visto pelos usuários da rede mundial de computadores.
+</P>
+
+<h3>2- Um pouco de história</h3>
+
+<p class="history-paragraph">
+  Machine learning é uma área da ciência da computação relacionada ao
+  desenvolvimento de tecnologias de aprendizado de máquinas. Para isso, é
+  utilizado análise de dados para elaboração de modelos analíticos, que auxiliam
+  em diversas aplicações.
+</p>
+
+<p class="history-paragraph">
+  A origem do machine learning como conceito e as primeiras tecnologias
+  desenvolvidas a partir disso estão na década de 1950. Alan Turing criou o
+  teste de quantas máquinas seriam capazes de pensar e elaborar o raciocínio
+  lógico humano.
+</p>
+
+<p class="history-paragraph">
+  O mecanismo elementar de funcionamento do machine learning é o algoritmo que,
+  por sua vez, consiste em uma linha de ação em face de um comando. Pode ser
+  interpretado, ainda, como uma sequência de passos indispensáveis para a
+  realização de uma tarefa qualquer. Dessa forma, fica evidente que o
+  aprendizado de máquinas serve também para ajudar pessoas a solucionar
+  problemas – afinal, algoritmos geram respostas. No entanto, essa é apenas a
+  parte mais simples, já que esses retornos podem ser elaborados quase ao
+  infinito.
+</p>
+
+<p class="praticing-paragraph">Vamos Praticar ?</p>
+<section class="praticing">
+  <div [routerLink]="'linear-regression'">
+    <span>Regressão Linear </span>
+    <mat-icon>show_chart</mat-icon>
+  </div>
+  <div [routerLink]="'binary-classification'">
+    <span>Classificação Binária</span>
+    <mat-icon>grain</mat-icon>
+  </div>
+</section>
+
+<div class="image">
+  <img src="../../assets/neurais-timeline.jpg" alt="" />
+  <br />
+  <span class="legend"
+    >Figura 1: Marcos no desenvolvimento das redes neurais.</span
+  >
+</div>
+<ul class="history">
+  <li>
+    1943: Warren McCulloch e Walter Pitts criam um modelo computacional para
+    redes neurais baseadas em matemática e algoritmos denominados lógica de
+    limiar.
+  </li>
+
+  <li>
+    1958: Frank Rosenblatt cria o Perceptron, um algoritmo para o reconhecimento
+    de padrões baseado em uma rede neural computacional de duas camadas usando
+    simples adição e subtração. Ele também propôs camadas adicionais com
+    notações matemáticas, mas isso não seria realizado até 1975.
+  </li>
+
+  <li>
+    1980: Kunihiko Fukushima propõe a Neoconitron, uma rede neural de
+    hierarquia, multicamada, que foi utilizada para o reconhecimento de
+    caligrafia e outros problemas de reconhecimento de padrões.
+  </li>
+
+  <li>
+    1989: os cientistas conseguiram criar algoritmos que usavam redes neurais
+    profundas, mas os tempos de treinamento para os sistemas foram medidos em
+    dias, tornando-os impraticáveis ​​para o uso no mundo real.
+  </li>
+
+  <li>
+    1992: Juyang Weng publica o Cresceptron, um método para realizar o
+    reconhecimento de objetos 3-D automaticamente a partir de cenas
+    desordenadas. Meados dos anos
+  </li>
+
+  <li>
+    2000: o termo “aprendizagem profunda” começa a ganhar popularidade após um
+    artigo de Geoffrey Hinton e Ruslan Salakhutdinov mostrar como uma rede
+    neural de várias camadas poderia ser pré-treinada uma camada por vez.
+  </li>
+
+  <li>
+    2009: acontece o NIPS Workshop sobre Aprendizagem Profunda para
+    Reconhecimento de Voz e descobre-se que com um conjunto de dados
+    suficientemente grande, as redes neurais não precisam de pré-treinamento e
+    as taxas de erro caem significativamente.
+  </li>
+
+  <li>
+    2012: algoritmos de reconhecimento de padrões artificiais alcançam
+    desempenho em nível humano em determinadas tarefas. E o algoritmo de
+    aprendizagem profunda do Google é capaz de identificar gatos.
+  </li>
+
+  <li>
+    2014: o Google compra a Startup de Inteligência Artificial chamada DeepMind,
+    do Reino Unido, por £ 400m
+  </li>
+
+  <li>
+    2015: Facebook coloca a tecnologia de aprendizado profundo – chamada
+    DeepFace – em operação para marcar e identificar automaticamente usuários do
+    Facebook em fotografias. Algoritmos executam tarefas superiores de
+    reconhecimento facial usando redes profundas que levam em conta 120 milhões
+    de parâmetros.
+  </li>
+
+  <li>
+    2016: o algoritmo do Google DeepMind, AlphaGo, mapeia a arte do complexo
+    jogo de tabuleiro Go e vence o campeão mundial de Go, Lee Sedol, em um
+    torneio altamente divulgado em Seul.
+  </li>
+
+  <li>
+    2017: adoção em massa do Deep Learning em diversas aplicações corporativas e
+    mobile, além do avanço em pesquisas. Todos os eventos de tecnologia ligados
+    a Data Science, IA e Big Data, apontam Deep Learning como a principal
+    tecnologia para criação de sistemas inteligentes.
+  </li>
+</ul>
+
+<p class="email">
+  Se há um desejo genuíno de ajudar o projeto, mande um e-mail para
+  poli.iot@poli.br
+</p>
+
+<div class="bibliografia">
+  <p>Referência bibliografica</p>
+</div>
