@@ -1,1 +1,140 @@
-<p>binary-classification-training works!</p>
+<main>
+  <div>
+    <canvas #training></canvas>
+  </div>
+
+  <p>{{ acurracy }}</p>
+  <p>{{ validation }}</p>
+
+  <div class="area">
+    <form class="training" [formGroup]="formTraining">
+      <p>Área reservada para treinamento</p>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Quantidade de Neurônios</mat-label>
+        <input
+          formControlName="neurons"
+          matInput
+          placeholder="Quantidade de Neurônios"
+          type="number"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Quantidade de interações</mat-label>
+        <input
+          type="number"
+          formControlName="epochs"
+          matInput
+          placeholder="Interações"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Learning Rate</mat-label>
+        <input
+          matInput
+          placeholder="Learning Rate"
+          formControlName="learningReating"
+          type="number"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Quantidade de amostras que deseja treinar</mat-label>
+        <input
+          matInput
+          formControlName="samples"
+          placeholder="Quantidade de amostras que deseja validar"
+          type="number"
+        />
+      </mat-form-field>
+
+      <button
+        [disabled]="!formTraining.valid"
+        mat-raised-button
+        color="primary"
+        (click)="learnLinear()"
+      >
+        Training
+      </button>
+
+      <div class="file">
+        <input
+          name="fupload"
+          type="file"
+          accept=".csv"
+          (change)="fileSelect($event)"
+          formControlName="file"
+          placeholder="Clique aqui para escolher uma arquivo .csv"
+        />
+      </div>
+      <p class="samples">Há amostras nesse arquivo</p>
+    </form>
+
+    <div>
+      <canvas #classifique></canvas>
+    </div>
+
+    <form [formGroup]="formClassify">
+      <p>Área reservada para classificação</p>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>X</mat-label>
+        <input formControlName="x" matInput type="number" />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Y</mat-label>
+        <input formControlName="y" matInput type="number" />
+      </mat-form-field>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Quantidade de Neurônios</mat-label>
+        <input
+          formControlName="neurons"
+          matInput
+          placeholder="Quantidade de Neurônios"
+          type="number"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Quantidade de interações</mat-label>
+        <input
+          matInput
+          formControlName="epochs"
+          placeholder="Quantidade de interações"
+          type="number"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Learning Rate</mat-label>
+        <input
+          formControlName="learningReating"
+          matInput
+          placeholder="Learning Rate"
+          type="number"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Quantidade de amostras que deseja treinar</mat-label>
+        <input
+          matInput
+          placeholder="Quantidade de amostras que deseja validar"
+          formControlName="samples"
+          type="number"
+        />
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="!formClassify.valid"
+        (click)="classify()"
+      >
+        Training
+      </button>
+      <p>O resultado é: {{ results }}</p>
+    </form>
+  </div>
+</main>

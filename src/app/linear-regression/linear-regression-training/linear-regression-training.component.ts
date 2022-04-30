@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import * as tf from '@tensorflow/tfjs';
 import * as tfvis from '@tensorflow/tfjs-vis';
@@ -26,16 +20,25 @@ export class LinearRegressionTrainingComponent implements OnInit {
   result = '';
   resultTraining = '';
   chart!: Chart;
+  isloading = false;
+  isloadingResult = false;
 
+  get sampleChoose() {
+    return this.test.length
+      ? this.test[this.formTraining.value.variable - 1]
+      : '';
+  }
   formTraining = this.fb.group({
-    epochs: [300, Validators.required],
+    epochs: ['', Validators.required],
     variable: ['', Validators.required],
     file: ['', Validators.required],
+    error: ['', Validators.required],
   });
 
   formResult = this.fb.group({
-    epochs: [300, Validators.required],
+    epochs: [, Validators.required],
     variable: ['', Validators.required],
+    error: ['', Validators.required],
   });
 
   constructor(private papa: Papa, private fb: FormBuilder) {
@@ -49,7 +52,7 @@ export class LinearRegressionTrainingComponent implements OnInit {
         datasets: [
           {
             type: 'line',
-            label: 'prediction',
+            label: 'Predição',
             data: [],
             fill: false,
             borderColor: 'blue',
@@ -57,7 +60,7 @@ export class LinearRegressionTrainingComponent implements OnInit {
           },
           {
             type: 'bubble',
-            label: 'training data',
+            label: 'Dados',
             data: [],
             backgroundColor: 'red',
             borderColor: 'transparent',
@@ -72,7 +75,6 @@ export class LinearRegressionTrainingComponent implements OnInit {
     if (files) {
       const reader = new FileReader();
       reader.readAsText(files);
-
       reader.onload = (event: any) => {
         this.papa.parse(event.target.result, {
           skipEmptyLines: true,
@@ -80,13 +82,17 @@ export class LinearRegressionTrainingComponent implements OnInit {
           complete: (results: any) => {
             this.test = results.data.map((d: any) => parseFloat(d.y));
             this.test2 = results.data.map((d: any) => parseFloat(d.x));
+            this.samples = this.test.length.toString();
           },
         });
       };
+    } else {
+      this.samples = '';
     }
   }
 
   async learnLinear() {
+    this.isloading = true;
     const xs = tf.tensor2d(this.test2, [this.test2.length, 1]);
     const ys = tf.tensor2d(this.test, [this.test.length, 1]);
 
@@ -97,7 +103,7 @@ export class LinearRegressionTrainingComponent implements OnInit {
 
     model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
     model.compile({
-      loss: 'meanSquaredError',
+      loss: this.formTraining.value.error,
       optimizer: optimizer,
     });
 
@@ -120,10 +126,13 @@ export class LinearRegressionTrainingComponent implements OnInit {
       tf.tensor2d([this.formTraining.value.variable], [1, 1]) as tf.Tensor
     )) as tf.Tensor;
 
-    console.log(a.dataSync()[0]);
+    this.resultTraining = a.dataSync()[0].toString();
+    this.isloading = false;
   }
 
   async resultRegression() {
+    this.isloadingResult = true;
+
     const xs = tf.tensor2d(this.test2, [this.test2.length, 1]);
     const ys = tf.tensor2d(this.test, [this.test.length, 1]);
 
@@ -134,33 +143,30 @@ export class LinearRegressionTrainingComponent implements OnInit {
 
     model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
     model.compile({
-      loss: 'meanSquaredError',
+      loss: this.formResult.value.error,
       optimizer: optimizer,
     });
 
     const history: any = [];
     const surface = { name: 'show.history live', tab: 'Training' };
 
-    await model
-      .fit(xs, ys, {
-        epochs: this.formResult.value.epochs,
-        callbacks: {
-          onEpochEnd: (epoch, log) => {
-            history.push(log);
-            tfvis.show.history(surface, history, ['loss']);
-          },
+    await model.fit(xs, ys, {
+      epochs: this.formResult.value.epochs,
+      callbacks: {
+        onEpochEnd: (epoch, log) => {
+          history.push(log);
+          tfvis.show.history(surface, history, ['loss']);
         },
-      })
-      .then(() => {
-        console.log('chegou');
-      });
+      },
+    });
 
     const a = (await model.predict(
       tf.tensor2d([this.formResult.value.variable], [1, 1]) as tf.Tensor
     )) as tf.Tensor;
 
-    console.log(a.dataSync()[0]);
-    console.log(a.dataSync()[0]);
+    this.result = a.dataSync()[0].toString();
+
+    this.isloadingResult = false;
   }
 
   private viewPredictionInGraphic(x: any, model: any) {
@@ -176,7 +182,7 @@ export class LinearRegressionTrainingComponent implements OnInit {
 
     this.chart.destroy();
 
-    new Chart(this.regressionLinear?.nativeElement, {
+    this.chart = new Chart(this.regressionLinear?.nativeElement, {
       type: 'bubble',
       data: {
         labels: this.test2,
@@ -198,7 +204,6 @@ export class LinearRegressionTrainingComponent implements OnInit {
           },
         ],
       },
-      options: { responsive: false },
     });
   }
 }

@@ -1,41 +1,147 @@
-<div>
-  <canvas #regressionLinear></canvas>
-</div>
 <main>
-  <h2>Área reservada para treinamento</h2>
-  <form action="" [formGroup]="formTraining">
-    <label for="">Interações</label>
-    <input type="number" formControlName="epochs" />
+  <div class="canvas">
+    <canvas #regressionLinear></canvas>
+  </div>
+  <mat-progress-bar *ngIf="isloading" mode="indeterminate"></mat-progress-bar>
 
-    <label for="">Valor da amostra</label>
-    <input type="number" formControlName="variable" />
-    <p>
-      O resultado do treinamento é:{{ resultTraining }}
+  <aside>
+    <form action="" [formGroup]="formTraining" class="training">
+      <h2>Área reservada para treinamento</h2>
 
-      <span *ngIf="resultTraining"
-        >O resultado é satisfatório. Deseja treinar mais uma vez
-      </span>
-    </p>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label
+          >Qual amostra da sua base de dados deseja utilizar?
+        </mat-label>
+        <input
+          matInput
+          placeholder="Amostra da sua base de dados"
+          value="Amostra"
+          type="number"
+          formControlName="variable"
+          min="0"
+        />
+        <mat-hint
+          >Esse parâmetro é para ser insirido o valor da amostra da base de
+          dados que você deseja utilizar para treinar
+        </mat-hint>
+      </mat-form-field>
 
-    <input
-      type="file"
-      accept=".csv"
-      (change)="fileSelect($event)"
-      formControlName="file"
-    />
-    <p *ngIf="samples">{{ samples }} os números de amostra desse arquivo</p>
-    <button [disabled]="!formTraining.valid" (click)="learnLinear()">
-      Training
-    </button>
-  </form>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Quantidade de interações </mat-label>
+        <input
+          matInput
+          placeholder="Quantidade de interações"
+          value="Interações"
+          type="number"
+          formControlName="epochs"
+          min="0"
+        />
+        <mat-hint
+          >Esse parâmetro é para ser insirido a quantidade de interações
+        </mat-hint>
+      </mat-form-field>
 
-  <form action="">
-    <h2>Área reservada para colher os resultados</h2>
-    <label for="">Interações</label>
-    <input type="text" name="" id="" />
+      <mat-form-field appearance="fill" class="example-full-width">
+        <mat-label>Escolha um error</mat-label>
+        <mat-select formControlName="error">
+          <mat-option value="meanSquaredError"
+            >Média dos erros ao quadrado</mat-option
+          >
+          <mat-option value="meanAbsoluteError">Erro Médio absoluto</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <label for="">Valor da variável independente</label>
-    <input type="text" name="" id="" />
-    <p>O resultado é: {{ result }}</p>
-  </form>
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="!formTraining.valid"
+        (click)="learnLinear()"
+      >
+        Training
+      </button>
+
+      <div class="file">
+        <input
+          name="fupload"
+          type="file"
+          accept=".csv"
+          (change)="fileSelect($event)"
+          formControlName="file"
+          placeholder="Clique aqui para escolher uma arquivo .csv"
+        />
+      </div>
+      <p class="samples" *ngIf="samples">
+        Há {{ samples }} amostras nesse arquivo
+      </p>
+
+      <p>
+        O resultado do treinamento é:{{ resultTraining }}
+
+        <span *ngIf="resultTraining"
+          >Na sua base de dados o resultado da amostra
+          {{ formTraining.value.variable }} é {{ sampleChoose }}. O Resultado é
+          satisfatório ou deseja treinar mais uma vez ?
+        </span>
+      </p>
+    </form>
+
+    <mat-progress-bar
+      *ngIf="isloadingResult"
+      mode="indeterminate"
+    ></mat-progress-bar>
+
+    <form action="" class="result" [formGroup]="formResult">
+      <h2>Área reservada para colher os resultados</h2>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Digite a amostra futura que você deseja predizer </mat-label>
+        <input
+          matInput
+          placeholder="Amostra da sua base de dados"
+          value="Amostra"
+          type="number"
+          formControlName="variable"
+          min="0"
+        />
+        <mat-hint
+          >Esse parâmetro é para ser insirido o valor da amostra futura que você
+          deseja predizer</mat-hint
+        >
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Quantidade de interações </mat-label>
+        <input
+          matInput
+          placeholder="Quantidade de interações"
+          value="Interações"
+          type="number"
+          formControlName="epochs"
+          min="0"
+        />
+        <mat-hint
+          >Esse parâmetro é para ser insirido a quantidade de interações
+        </mat-hint>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Escolha um error</mat-label>
+        <mat-select formControlName="error">
+          <mat-option value="meanSquaredError"
+            >Média dos erros ao quadrado</mat-option
+          >
+          <mat-option value="meanAbsoluteError">Erro Médio absoluto</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="resultRegression()"
+        [disabled]="!formResult.valid"
+      >
+        Training
+      </button>
+      <p>O resultado é: {{ result }}</p>
+    </form>
+  </aside>
 </main>
