@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
-import { BinaryClassificationLearnComponent } from './binary-classification-learn/binary-classification-learn.component';
 import { BinaryClassificationTrainingComponent } from './binary-classification-training/binary-classification-training.component';
 import { BinaryClassificationComponent } from './binary-classification.component';
 import { MatInputModule } from '@angular/material/input';
@@ -14,7 +13,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
-    BinaryClassificationLearnComponent,
     BinaryClassificationTrainingComponent,
     BinaryClassificationComponent,
   ],

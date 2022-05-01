@@ -52,7 +52,7 @@ export class LinearRegressionTrainingComponent implements OnInit {
         datasets: [
           {
             type: 'line',
-            label: 'Predição',
+            label: 'Reta da Regressão Linear',
             data: [],
             fill: false,
             borderColor: 'blue',
@@ -83,6 +83,7 @@ export class LinearRegressionTrainingComponent implements OnInit {
             this.test = results.data.map((d: any) => parseFloat(d.y));
             this.test2 = results.data.map((d: any) => parseFloat(d.x));
             this.samples = this.test.length.toString();
+            console.log(this.test);
           },
         });
       };
@@ -189,7 +190,7 @@ export class LinearRegressionTrainingComponent implements OnInit {
         datasets: [
           {
             type: 'line',
-            label: 'prediction',
+            label: 'Reta da Regressão Linear',
             data: ar_pred,
             fill: false,
             borderColor: 'blue',
@@ -197,7 +198,7 @@ export class LinearRegressionTrainingComponent implements OnInit {
           },
           {
             type: 'bubble',
-            label: 'training data',
+            label: 'Dados',
             data: toy_data,
             backgroundColor: 'red',
             borderColor: 'transparent',
