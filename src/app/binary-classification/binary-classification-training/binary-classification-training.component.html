@@ -1,14 +1,18 @@
 <main>
-  <div>
+  <div class="canvas">
     <canvas #training></canvas>
   </div>
 
-  <p>{{ acurracy }}</p>
-  <p>{{ validation }}</p>
+  <p class="samples">{{ acurracy }}</p>
+  <p class="samples">{{ validation }}</p>
 
   <div class="area">
     <form class="training" [formGroup]="formTraining">
-      <p>Área reservada para treinamento</p>
+      <mat-progress-bar
+        *ngIf="isloading || isloadingResult"
+        mode="indeterminate"
+      ></mat-progress-bar>
+      <h2>Área reservada para treinamento</h2>
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Quantidade de Neurônios</mat-label>
         <input
@@ -39,23 +43,26 @@
         />
       </mat-form-field>
 
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Quantidade de amostras que deseja treinar</mat-label>
-        <input
-          matInput
-          formControlName="samples"
-          placeholder="Quantidade de amostras que deseja validar"
-          type="number"
-        />
+      <mat-form-field appearance="fill" class="example-full-width">
+        <mat-label>Porcetagem de amostras que deseja treinar</mat-label>
+        <mat-select formControlName="samples">
+          <mat-option value="0.1">10%</mat-option>
+          <mat-option value="0.2">20%</mat-option>
+          <mat-option value="0.3">30%</mat-option>
+          <mat-option value="0.4">40%</mat-option>
+        </mat-select>
       </mat-form-field>
 
       <button
-        [disabled]="!formTraining.valid"
+        [disabled]="!formTraining.valid || isloading || isloadingResult"
         mat-raised-button
         color="primary"
         (click)="learnLinear()"
       >
-        Training
+        <span *ngIf="!(isloading || isloadingResult)">Treine</span>
+        <div *ngIf="isloading || isloadingResult" class="spiner">
+          <mat-spinner diameter="20"></mat-spinner>
+        </div>
       </button>
 
       <div class="file">
@@ -68,15 +75,21 @@
           placeholder="Clique aqui para escolher uma arquivo .csv"
         />
       </div>
-      <p class="samples">Há amostras nesse arquivo</p>
+      <p class="samples" *ngIf="samples">
+        Há {{ samples }} amostras nesse arquivo
+      </p>
     </form>
 
-    <div>
+    <div class="canvas">
       <canvas #classifique></canvas>
     </div>
 
-    <form [formGroup]="formClassify">
-      <p>Área reservada para classificação</p>
+    <form [formGroup]="formClassify" class="result">
+      <mat-progress-bar
+        *ngIf="isloading || isloadingResult"
+        mode="indeterminate"
+      ></mat-progress-bar>
+      <h2>Área reservada para classificação</h2>
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>X</mat-label>
         <input formControlName="x" matInput type="number" />
@@ -116,25 +129,28 @@
         />
       </mat-form-field>
 
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Quantidade de amostras que deseja treinar</mat-label>
-        <input
-          matInput
-          placeholder="Quantidade de amostras que deseja validar"
-          formControlName="samples"
-          type="number"
-        />
+      <mat-form-field appearance="fill" class="example-full-width">
+        <mat-label>Porcetagem de amostras que deseja treinar</mat-label>
+        <mat-select formControlName="samples">
+          <mat-option value="0.1">10%</mat-option>
+          <mat-option value="0.2">20%</mat-option>
+          <mat-option value="0.3">30%</mat-option>
+          <mat-option value="0.4">40%</mat-option>
+        </mat-select>
       </mat-form-field>
 
       <button
         mat-raised-button
         color="primary"
-        [disabled]="!formClassify.valid"
+        [disabled]="!formClassify.valid || isloading || isloadingResult"
         (click)="classify()"
       >
-        Training
+        <span *ngIf="!(isloading || isloadingResult)">Classifique</span>
+        <div *ngIf="isloading || isloadingResult" class="spiner">
+          <mat-spinner diameter="20"></mat-spinner>
+        </div>
       </button>
-      <p>O resultado é: {{ results }}</p>
+      <p class="samples">O resultado é: {{ results }}</p>
     </form>
   </div>
 </main>

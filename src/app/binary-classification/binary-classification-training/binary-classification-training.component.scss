@@ -9,3 +9,68 @@ main {
   padding-left: 50px;
   background-color: #f9f9f9;
 }
+
+.samples {
+  font-weight: 600;
+  color: #1f89ff;
+}
+
+.training {
+  border-top: 1px solid #a1c7e6;
+  margin-top: 20px;
+}
+
+.result {
+  border-top: 1px solid #a1c7e6;
+  margin-top: 20px;
+}
+
+.file {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.canvas {
+  height: 270px;
+  width: 480px;
+  padding-top: 50px;
+}
+button {
+  margin-bottom: 10px;
+  height: 38px;
+  width: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h2 {
+  margin-top: 10px;
+}
+
+::-webkit-file-upload-button {
+  background-color: #3f51b5;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  border: 0;
+  padding: 0.5rem;
+
+  user-select: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+  display: inline-block;
+  white-space: nowrap;
+  text-decoration: none;
+  vertical-align: baseline;
+  text-align: center;
+  margin: 0;
+  min-width: 64px;
+  line-height: 36px;
+  padding: 0 16px;
+  border-radius: 4px;
+  overflow: visible;
+  transform: translate3d(0, 0, 0);
+}

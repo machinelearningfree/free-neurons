@@ -4,6 +4,7 @@ import * as tf from '@tensorflow/tfjs';
 import * as tfvis from '@tensorflow/tfjs-vis';
 import { Chart, registerables } from 'chart.js';
 import { Papa } from 'ngx-papaparse';
+import { datas } from '../../industries.data';
 @Component({
   selector: 'app-binary-classification-training',
   templateUrl: './binary-classification-training.component.html',
@@ -22,6 +23,7 @@ export class BinaryClassificationTrainingComponent implements OnInit {
 
   validation = '';
   acurracy = '';
+  samples = '';
 
   dataOne: any = [];
   dataTwo: any = [];
@@ -37,6 +39,9 @@ export class BinaryClassificationTrainingComponent implements OnInit {
 
   x_val: any = [];
   y_val: any = [];
+
+  isloading = false;
+  isloadingResult = false;
 
   formTraining = this.fb.group({
     epochs: ['', Validators.required],
@@ -66,18 +71,15 @@ export class BinaryClassificationTrainingComponent implements OnInit {
         datasets: [
           {
             data: [],
-            label: 'class 0',
+            label: 'classe 0',
             backgroundColor: 'black',
           },
           {
             data: [],
-            label: 'class 1',
+            label: 'classe 1',
             backgroundColor: 'red',
           },
         ],
-      },
-      options: {
-        responsive: false,
       },
     });
 
@@ -87,12 +89,12 @@ export class BinaryClassificationTrainingComponent implements OnInit {
         datasets: [
           {
             data: [],
-            label: 'class 0',
+            label: 'classe 0',
             backgroundColor: 'black',
           },
           {
             data: [],
-            label: 'class 1',
+            label: 'classe 1',
             backgroundColor: 'red',
           },
           {
@@ -103,9 +105,6 @@ export class BinaryClassificationTrainingComponent implements OnInit {
             borderColor: 'green',
           },
         ],
-      },
-      options: {
-        responsive: false,
       },
     });
   }
@@ -120,6 +119,7 @@ export class BinaryClassificationTrainingComponent implements OnInit {
           skipEmptyLines: true,
           header: true,
           complete: (results: any) => {
+            this.samples = results.data.length.toString();
             this.dataTwo = results.data
               .map((d: any) => {
                 if (parseInt(d.c) === 1) {
@@ -183,6 +183,8 @@ export class BinaryClassificationTrainingComponent implements OnInit {
   }
 
   async classify() {
+    this.isloading = true;
+    this.isloadingResult = true;
     const model = tf.sequential();
 
     const x_train = tf.tensor2d(this.x_train, [this.x_train.length, 2]);
@@ -193,7 +195,7 @@ export class BinaryClassificationTrainingComponent implements OnInit {
 
     model.add(
       tf.layers.dense({
-        units: this.formTraining.value.neurons,
+        units: this.formClassify.value.neurons,
         activation: 'sigmoid',
         inputShape: [2],
       })
@@ -201,7 +203,7 @@ export class BinaryClassificationTrainingComponent implements OnInit {
 
     model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
 
-    const mySGD = tf.train.sgd(this.formTraining.value.learningReating);
+    const mySGD = tf.train.sgd(this.formClassify.value.learningReating);
 
     model.compile({
       loss: 'binaryCrossentropy',
@@ -213,7 +215,7 @@ export class BinaryClassificationTrainingComponent implements OnInit {
     const surface = { name: 'show.history live', tab: 'Training' };
 
     await model.fit(x_train, y_train, {
-      epochs: this.formTraining.value.epochs,
+      epochs: this.formClassify.value.epochs,
       validationData: [x_val, y_val],
       callbacks: {
         onEpochEnd: async (epoch, logs) => {
@@ -241,17 +243,20 @@ export class BinaryClassificationTrainingComponent implements OnInit {
 
     this.results =
       'Class: ' + Math.round(parseFloat(y_pred.dataSync().toString()));
+
+    this.isloading = false;
+    this.isloadingResult = false;
   }
 
   async learnLinear() {
-    const model = tf.sequential();
+    this.isloading = true;
+    this.isloadingResult = true;
 
+    const model = tf.sequential();
     const x_train = tf.tensor2d(this.x_train, [this.x_train.length, 2]);
     const y_train = tf.tensor2d(this.y_train, [this.y_train.length, 1]);
-
     const x_val = tf.tensor2d(this.x_val, [this.x_val.length, 2]);
     const y_val = tf.tensor2d(this.y_val, [this.y_val.length, 1]);
-
     model.add(
       tf.layers.dense({
         units: this.formTraining.value.neurons,
@@ -259,20 +264,15 @@ export class BinaryClassificationTrainingComponent implements OnInit {
         inputShape: [2],
       })
     );
-
     model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
-
     const mySGD = tf.train.sgd(this.formTraining.value.learningReating);
-
     model.compile({
       loss: 'binaryCrossentropy',
       optimizer: mySGD,
       metrics: ['accuracy'],
     });
-
     const trainLogs: any = [];
     const surface = { name: 'show.history live', tab: 'Training' };
-
     await model.fit(x_train, y_train, {
       epochs: this.formTraining.value.epochs,
       validationData: [x_val, y_val],
@@ -298,12 +298,17 @@ export class BinaryClassificationTrainingComponent implements OnInit {
     let round = (num: any) => parseFloat(`${num * 100}`).toFixed(2);
 
     this.acurracy =
-      'Training Accuracy:' + round(eval_train[1].dataSync()) + '%';
+      'Acurácia dos dados de treinamento:' +
+      round(eval_train[1].dataSync()) +
+      '%';
 
     this.validation =
-      'Validation Accuracy : ' + round(eval_val[1].dataSync()) + '%';
+      'Acurácia dos dados de validação: ' + round(eval_val[1].dataSync()) + '%';
 
     this.graphicTraing();
+
+    this.isloading = false;
+    this.isloadingResult = false;
   }
 
   graphicClass() {
@@ -314,12 +319,12 @@ export class BinaryClassificationTrainingComponent implements OnInit {
         datasets: [
           {
             data: this.valPt[0],
-            label: 'class 0',
+            label: 'classe 0',
             backgroundColor: 'black',
           },
           {
             data: this.valPt[1],
-            label: 'class 1',
+            label: 'classe 1',
             backgroundColor: 'red',
           },
           {
@@ -331,14 +336,11 @@ export class BinaryClassificationTrainingComponent implements OnInit {
                 r: 5,
               },
             ],
-            label: 'new data',
+            label: 'Dado classificado',
             backgroundColor: '#32fa32',
             borderColor: 'green',
           },
         ],
-      },
-      options: {
-        responsive: false,
       },
     });
   }
@@ -352,18 +354,15 @@ export class BinaryClassificationTrainingComponent implements OnInit {
         datasets: [
           {
             data: this.trainPt[0],
-            label: 'class 0',
+            label: 'classe 0',
             backgroundColor: 'black',
           },
           {
             data: this.trainPt[1],
-            label: 'class 1',
+            label: 'classe 1',
             backgroundColor: 'red',
           },
         ],
-      },
-      options: {
-        responsive: false,
       },
     });
   }

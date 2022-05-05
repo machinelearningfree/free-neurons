@@ -54,10 +54,13 @@
       <button
         mat-raised-button
         color="primary"
-        [disabled]="!formTraining.valid"
+        [disabled]="!formTraining.valid || isloading || isloadingResult"
         (click)="learnLinear()"
       >
-        Training
+        <span *ngIf="!(isloading || isloadingResult)">Treine</span>
+        <div *ngIf="isloading || isloadingResult" class="spiner">
+          <mat-spinner diameter="20"></mat-spinner>
+        </div>
       </button>
 
       <div class="file">
@@ -74,7 +77,7 @@
         Há {{ samples }} amostras nesse arquivo
       </p>
 
-      <p>
+      <p class="samples">
         O resultado do treinamento é:{{ resultTraining }}
 
         <span *ngIf="resultTraining"
@@ -137,11 +140,14 @@
         mat-raised-button
         color="primary"
         (click)="resultRegression()"
-        [disabled]="!formResult.valid"
+        [disabled]="!formResult.valid || isloading || isloadingResult"
       >
-        Training
+        <span *ngIf="!(isloading || isloadingResult)">Predizer</span>
+        <div *ngIf="isloading || isloadingResult" class="spiner">
+          <mat-spinner diameter="20"></mat-spinner>
+        </div>
       </button>
-      <p>O resultado é: {{ result }}</p>
+      <p class="samples">O resultado é: {{ result }}</p>
     </form>
   </aside>
 </main>

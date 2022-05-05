@@ -68,6 +68,10 @@ export class LinearRegressionTrainingComponent implements OnInit {
         ],
       },
     });
+
+    this.formTraining.valueChanges.subscribe(() => {
+      this.resultTraining = '';
+    });
   }
 
   fileSelect(evt: any) {
@@ -83,7 +87,6 @@ export class LinearRegressionTrainingComponent implements OnInit {
             this.test = results.data.map((d: any) => parseFloat(d.y));
             this.test2 = results.data.map((d: any) => parseFloat(d.x));
             this.samples = this.test.length.toString();
-            console.log(this.test);
           },
         });
       };
@@ -94,6 +97,8 @@ export class LinearRegressionTrainingComponent implements OnInit {
 
   async learnLinear() {
     this.isloading = true;
+    this.isloadingResult = true;
+
     const xs = tf.tensor2d(this.test2, [this.test2.length, 1]);
     const ys = tf.tensor2d(this.test, [this.test.length, 1]);
 
@@ -129,10 +134,12 @@ export class LinearRegressionTrainingComponent implements OnInit {
 
     this.resultTraining = a.dataSync()[0].toString();
     this.isloading = false;
+    this.isloadingResult = false;
   }
 
   async resultRegression() {
     this.isloadingResult = true;
+    this.isloading = true;
 
     const xs = tf.tensor2d(this.test2, [this.test2.length, 1]);
     const ys = tf.tensor2d(this.test, [this.test.length, 1]);
@@ -167,6 +174,7 @@ export class LinearRegressionTrainingComponent implements OnInit {
 
     this.result = a.dataSync()[0].toString();
 
+    this.isloading = false;
     this.isloadingResult = false;
   }
 
