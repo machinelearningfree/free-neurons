@@ -18,7 +18,8 @@
     "target": "es2017",
     "module": "es2020",
     "types": ["@types/long"],
-    "lib": ["es2018", "dom"]
+    "lib": ["es2018", "dom"],
+    "allowJs": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

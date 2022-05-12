@@ -4,11 +4,12 @@ import * as tf from '@tensorflow/tfjs';
 import * as tfvis from '@tensorflow/tfjs-vis';
 import { Chart, registerables } from 'chart.js';
 import { Papa } from 'ngx-papaparse';
-import { datas } from '../../industries.data';
+import { SnackBarService } from 'src/app/snack-bar/snack-bar.service';
 @Component({
   selector: 'app-binary-classification-training',
   templateUrl: './binary-classification-training.component.html',
   styleUrls: ['./binary-classification-training.component.scss'],
+  providers: [SnackBarService],
 })
 export class BinaryClassificationTrainingComponent implements OnInit {
   @ViewChild('training', { static: true })
@@ -60,7 +61,11 @@ export class BinaryClassificationTrainingComponent implements OnInit {
     y: ['', Validators.required],
   });
 
-  constructor(private papa: Papa, private fb: FormBuilder) {
+  constructor(
+    private papa: Papa,
+    private fb: FormBuilder,
+    private snackbar: SnackBarService
+  ) {
     Chart.register(...registerables);
   }
 
@@ -147,8 +152,25 @@ export class BinaryClassificationTrainingComponent implements OnInit {
               })
               .filter((a: any) => a);
 
-            let nv1 = Math.round(this.dataOne.length * 0.7);
-            let nv2 = Math.round(this.dataTwo.length * 0.7);
+            if (
+              results.errors.length ||
+              this.dataOne.includes(NaN, undefined, null) ||
+              this.dataTwo.includes(NaN, undefined, null) ||
+              this.class1.includes(NaN, undefined, null) ||
+              this.class2.includes(NaN, undefined, null) ||
+              !this.class2.length ||
+              !this.class1.length
+            ) {
+              this.snackbar.open();
+              this.formTraining.controls.file.setValue('');
+              this.samples = '';
+            }
+
+            this.samples = results.data.length.toString();
+            const sample = 1 - this.formTraining.value.samples;
+
+            let nv1 = Math.round(this.dataOne.length * sample);
+            let nv2 = Math.round(this.dataTwo.length * sample);
 
             this.trainPt = [
               this.dataOne.slice(0, nv1),
@@ -313,7 +335,8 @@ export class BinaryClassificationTrainingComponent implements OnInit {
 
   graphicClass() {
     this.graphicClassify.destroy();
-    new Chart(this.classifique?.nativeElement, {
+
+    this.graphicClassify = new Chart(this.classifique?.nativeElement, {
       type: 'scatter',
       data: {
         datasets: [

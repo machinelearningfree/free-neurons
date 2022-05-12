@@ -4,11 +4,13 @@ import * as tf from '@tensorflow/tfjs';
 import * as tfvis from '@tensorflow/tfjs-vis';
 import { Chart, registerables } from 'chart.js';
 import { Papa } from 'ngx-papaparse';
+import { SnackBarService } from '../../snack-bar/snack-bar.service';
 
 @Component({
   selector: 'app-linear-regression-training',
   templateUrl: './linear-regression-training.component.html',
   styleUrls: ['./linear-regression-training.component.scss'],
+  providers: [SnackBarService],
 })
 export class LinearRegressionTrainingComponent implements OnInit {
   @ViewChild('regressionLinear', { static: true })
@@ -41,7 +43,11 @@ export class LinearRegressionTrainingComponent implements OnInit {
     error: ['', Validators.required],
   });
 
-  constructor(private papa: Papa, private fb: FormBuilder) {
+  constructor(
+    private papa: Papa,
+    private fb: FormBuilder,
+    private snackbar: SnackBarService
+  ) {
     Chart.register(...registerables);
   }
 
@@ -86,6 +92,16 @@ export class LinearRegressionTrainingComponent implements OnInit {
           complete: (results: any) => {
             this.test = results.data.map((d: any) => parseFloat(d.y));
             this.test2 = results.data.map((d: any) => parseFloat(d.x));
+
+            if (
+              results.errors.length ||
+              this.test.includes(NaN, undefined, null) ||
+              this.test2.includes(NaN, undefined, null)
+            ) {
+              this.snackbar.open();
+              this.formTraining.controls.file.setValue('');
+              this.samples = '';
+            }
             this.samples = this.test.length.toString();
           },
         });
@@ -121,7 +137,10 @@ export class LinearRegressionTrainingComponent implements OnInit {
       callbacks: {
         onEpochEnd: (epoch, log) => {
           history.push(log);
-          tfvis.show.history(surface, history, ['loss']);
+          tfvis.show.history(surface, history, ['loss'], {
+            width: 400,
+            height: 250,
+          });
         },
       },
     });
@@ -163,7 +182,10 @@ export class LinearRegressionTrainingComponent implements OnInit {
       callbacks: {
         onEpochEnd: (epoch, log) => {
           history.push(log);
-          tfvis.show.history(surface, history, ['loss']);
+          tfvis.show.history(surface, history, ['loss'], {
+            width: 400,
+            height: 250,
+          });
         },
       },
     });

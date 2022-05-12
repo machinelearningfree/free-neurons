@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
-import { BinaryClassificationTrainingComponent } from './binary-classification-training/binary-classification-training.component';
-import { BinaryClassificationComponent } from './binary-classification.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -11,13 +9,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MulticlassClassificationComponent } from './multiclass-classification.component';
+import { MulticlassClassificationTrainingComponent } from './multiclass-classification-training/multiclass-classification-training.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
-    BinaryClassificationTrainingComponent,
-    BinaryClassificationComponent,
+    MulticlassClassificationComponent,
+    MulticlassClassificationTrainingComponent,
   ],
   imports: [
     CommonModule,
@@ -31,8 +30,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSelectModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule,
     MatTooltipModule,
   ],
 })
-export class BinaryClassificationModule {}
+export class MulticlassClassificationModule {}

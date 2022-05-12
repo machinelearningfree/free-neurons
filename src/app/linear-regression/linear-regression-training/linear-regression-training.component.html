@@ -135,18 +135,25 @@
           <mat-option value="meanAbsoluteError">Erro Médio absoluto</mat-option>
         </mat-select>
       </mat-form-field>
+      <div matTooltip="Arquivo">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="resultRegression()"
+          [disabled]="
+            !formResult.valid ||
+            isloading ||
+            isloadingResult ||
+            !formTraining.value.file
+          "
+        >
+          <span *ngIf="!(isloading || isloadingResult)">Predizer</span>
+          <div *ngIf="isloading || isloadingResult" class="spiner">
+            <mat-spinner diameter="20"></mat-spinner>
+          </div>
+        </button>
+      </div>
 
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="resultRegression()"
-        [disabled]="!formResult.valid || isloading || isloadingResult"
-      >
-        <span *ngIf="!(isloading || isloadingResult)">Predizer</span>
-        <div *ngIf="isloading || isloadingResult" class="spiner">
-          <mat-spinner diameter="20"></mat-spinner>
-        </div>
-      </button>
       <p class="samples">O resultado é: {{ result }}</p>
     </form>
   </aside>

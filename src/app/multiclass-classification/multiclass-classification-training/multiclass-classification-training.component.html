@@ -3,9 +3,6 @@
     <canvas #training></canvas>
   </div>
 
-  <p class="samples">{{ acurracy }}</p>
-  <p class="samples">{{ validation }}</p>
-
   <div class="area">
     <form class="training" [formGroup]="formTraining">
       <mat-progress-bar
@@ -13,6 +10,26 @@
         mode="indeterminate"
       ></mat-progress-bar>
       <h2>Área reservada para treinamento</h2>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>X</mat-label>
+        <input formControlName="x" matInput type="number" />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Y</mat-label>
+        <input formControlName="y" matInput type="number" />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Z</mat-label>
+        <input formControlName="z" matInput type="number" />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>R</mat-label>
+        <input formControlName="r" matInput type="number" />
+      </mat-form-field>
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Quantidade de Neurônios</mat-label>
         <input
@@ -43,16 +60,6 @@
         />
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="example-full-width">
-        <mat-label>Porcetagem de amostras que deseja treinar</mat-label>
-        <mat-select formControlName="samples">
-          <mat-option value="0.1">10%</mat-option>
-          <mat-option value="0.2">20%</mat-option>
-          <mat-option value="0.3">30%</mat-option>
-          <mat-option value="0.4">40%</mat-option>
-        </mat-select>
-      </mat-form-field>
-
       <button
         [disabled]="!formTraining.valid || isloading || isloadingResult"
         mat-raised-button
@@ -75,14 +82,7 @@
           placeholder="Clique aqui para escolher uma arquivo .csv"
         />
       </div>
-      <p class="samples" *ngIf="samples">
-        Há {{ samples }} amostras nesse arquivo
-      </p>
     </form>
-
-    <div class="canvas">
-      <canvas #classifique></canvas>
-    </div>
 
     <form [formGroup]="formClassify" class="result">
       <mat-progress-bar
@@ -99,6 +99,17 @@
         <mat-label>Y</mat-label>
         <input formControlName="y" matInput type="number" />
       </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Z</mat-label>
+        <input formControlName="z" matInput type="number" />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>R</mat-label>
+        <input formControlName="r" matInput type="number" />
+      </mat-form-field>
+
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Quantidade de Neurônios</mat-label>
         <input
@@ -128,26 +139,11 @@
           type="number"
         />
       </mat-form-field>
-
-      <mat-form-field appearance="fill" class="example-full-width">
-        <mat-label>Porcetagem de amostras que deseja treinar</mat-label>
-        <mat-select formControlName="samples">
-          <mat-option value="0.1">10%</mat-option>
-          <mat-option value="0.2">20%</mat-option>
-          <mat-option value="0.3">30%</mat-option>
-          <mat-option value="0.4">40%</mat-option>
-        </mat-select>
-      </mat-form-field>
       <div matTooltip="Arquivo">
         <button
           mat-raised-button
           color="primary"
-          [disabled]="
-            !formClassify.valid ||
-            isloading ||
-            isloadingResult ||
-            !formTraining.value.file
-          "
+          [disabled]="!formClassify.valid || isloading || isloadingResult"
           (click)="classify()"
         >
           <span *ngIf="!(isloading || isloadingResult)">Classifique</span>
