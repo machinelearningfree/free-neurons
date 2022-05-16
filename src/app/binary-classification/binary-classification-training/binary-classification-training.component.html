@@ -73,6 +73,11 @@
           (change)="fileSelect($event)"
           formControlName="file"
           placeholder="Clique aqui para escolher uma arquivo .csv"
+          [matTooltip]="
+            !formTraining.value.file
+              ? 'O arquivo deve ser no formato CSV. Com três colunas na seguinte estrutura: X | Y | C . Onde x e y são são as dimensões e c o número da classe (0 ou 1)'
+              : ''
+          "
         />
       </div>
       <p class="samples" *ngIf="samples">
@@ -138,24 +143,24 @@
           <mat-option value="0.4">40%</mat-option>
         </mat-select>
       </mat-form-field>
-      <div matTooltip="Arquivo">
-        <button
-          mat-raised-button
-          color="primary"
-          [disabled]="
-            !formClassify.valid ||
-            isloading ||
-            isloadingResult ||
-            !formTraining.value.file
-          "
-          (click)="classify()"
-        >
-          <span *ngIf="!(isloading || isloadingResult)">Classifique</span>
-          <div *ngIf="isloading || isloadingResult" class="spiner">
-            <mat-spinner diameter="20"></mat-spinner>
-          </div>
-        </button>
-      </div>
+
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="
+          !formClassify.valid ||
+          isloading ||
+          isloadingResult ||
+          !formTraining.value.file
+        "
+        (click)="classify()"
+      >
+        <span *ngIf="!(isloading || isloadingResult)">Classifique</span>
+        <div *ngIf="isloading || isloadingResult" class="spiner">
+          <mat-spinner diameter="20"></mat-spinner>
+        </div>
+      </button>
+
       <p class="samples">O resultado é: {{ results }}</p>
     </form>
   </div>

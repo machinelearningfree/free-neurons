@@ -76,8 +76,20 @@
           (change)="fileSelect($event)"
           formControlName="file"
           placeholder="Clique aqui para escolher uma arquivo .csv"
+          [matTooltip]="
+            !formTraining.value.file
+              ? 'O arquivo deve se do formato CSV. Com quatro colunas na seguinte estrutura:X | Y | Z | R | C. Onde x, y, z, r são as dimensões e c o número da classe. A classe deve ser representado por  0,0,0 ou 0,0,1 ou 0,1,0 ou 0,1,1 ou 1,0,0 ou 1,0,1 ou 1,1,0 ou 1,1,1. Ou seja podem até no máximo 8 classes'
+              : ''
+          "
         />
       </div>
+
+      <p class="samples" *ngIf="samples">
+        Há {{ samples }} amostras nesse arquivo
+      </p>
+      <p class="samples">
+        O resultado do treinamento é: [ {{ resultTraining }} ]
+      </p>
     </form>
 
     <form [formGroup]="formClassify" class="result">
@@ -135,20 +147,25 @@
           type="number"
         />
       </mat-form-field>
-      <div matTooltip="Arquivo">
-        <button
-          mat-raised-button
-          color="primary"
-          [disabled]="!formClassify.valid || isloading || isloadingResult"
-          (click)="classify()"
-        >
-          <span *ngIf="!(isloading || isloadingResult)">Classifique</span>
-          <div *ngIf="isloading || isloadingResult" class="spiner">
-            <mat-spinner diameter="20"></mat-spinner>
-          </div>
-        </button>
-      </div>
-      <p class="samples">O resultado é: {{ results }}</p>
+
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="
+          !formClassify.valid ||
+          isloading ||
+          isloadingResult ||
+          !formTraining.value.file
+        "
+        (click)="classify()"
+      >
+        <span *ngIf="!(isloading || isloadingResult)">Classifique</span>
+        <div *ngIf="isloading || isloadingResult" class="spiner">
+          <mat-spinner diameter="20"></mat-spinner>
+        </div>
+      </button>
+
+      <p class="samples">O resultado é: [ {{ results }} ]</p>
     </form>
   </div>
 </main>

@@ -3,21 +3,23 @@ import { FormBuilder, Validators } from '@angular/forms';
 
 import { Chart, registerables } from 'chart.js';
 import { Papa } from 'ngx-papaparse';
-import { x, y } from './data';
 import { MLP } from './MLP';
+import { SnackBarService } from '../../snack-bar/snack-bar.service';
 
 @Component({
   selector: 'app-multiclass-classification-training',
   templateUrl: './multiclass-classification-training.component.html',
   styleUrls: ['./multiclass-classification-training.component.scss'],
+  providers: [SnackBarService],
 })
 export class MulticlassClassificationTrainingComponent implements OnInit {
   @ViewChild('training', { static: true })
   training?: ElementRef;
 
   graphicTraining!: Chart;
-  results = '';
-
+  results: number[] = [];
+  resultTraining: number[] = [];
+  samples = '';
   dataOne: any = [];
   dataTwo: any = [];
 
@@ -45,7 +47,11 @@ export class MulticlassClassificationTrainingComponent implements OnInit {
     r: ['', Validators.required],
   });
 
-  constructor(private papa: Papa, private fb: FormBuilder) {
+  constructor(
+    private papa: Papa,
+    private fb: FormBuilder,
+    private snack: SnackBarService
+  ) {
     Chart.register(...registerables);
   }
 
@@ -67,21 +73,6 @@ export class MulticlassClassificationTrainingComponent implements OnInit {
         ],
       },
     });
-
-    console.log(x[0].length, x[0].length * 2, 3, 0.01, 1);
-
-    let nn = new MLP(x[0].length, x[0].length * 2, 3, 0.01, 500);
-
-    nn.shuffle(x, y);
-
-    //var t0 = performance.now();
-    nn.fit(x, y);
-    //var t1 = performance.now();
-    //console.log("Training took " + (t1 - t0) + " milliseconds.")
-
-    // expected output [0,1,0] = Iris-versicolor
-
-    console.table(nn.predict([5.9, 3.0, 5.1, 1.8])!.data);
   }
 
   fileSelect(evt: any) {
@@ -94,7 +85,38 @@ export class MulticlassClassificationTrainingComponent implements OnInit {
           skipEmptyLines: true,
           header: true,
           complete: (results) => {
-            console.log(results);
+            this.dataOne = results.data.map((d: any) => {
+              return [
+                parseFloat(d.x),
+                parseFloat(d.y),
+                parseFloat(d.z),
+                parseFloat(d.r),
+              ];
+            });
+
+            this.dataTwo = results.data.map((d: any) => {
+              const splited = d.c.split(',');
+              return [
+                parseFloat(splited[0]),
+                parseFloat(splited[1]),
+                parseFloat(splited[2]),
+              ];
+            });
+
+            if (
+              results.errors.length ||
+              this.dataOne.includes(NaN, undefined, null) ||
+              this.dataTwo.includes(NaN, undefined, null) ||
+              !this.dataOne.length ||
+              !this.dataTwo.length ||
+              this.dataOne[0].length !== 4
+            ) {
+              this.samples = '';
+              this.formTraining.controls.file.setValue('');
+              this.snack.open();
+            }
+
+            this.samples = this.dataOne.length;
           },
         });
       };
@@ -102,32 +124,62 @@ export class MulticlassClassificationTrainingComponent implements OnInit {
   }
 
   classify() {
-    let nn = new MLP(x[0].length, x[0].length * 2, 3, 0.01, 500);
+    this.isloading = true;
+    this.isloadingResult = true;
+    let nn = new MLP(
+      this.dataOne[0].length,
+      this.formClassify.value.neurons,
+      3,
+      this.formClassify.value.learningReating,
+      this.formClassify.value.epochs
+    );
 
-    nn.shuffle(x, y);
+    nn.shuffle(this.dataOne, this.dataTwo);
 
-    //var t0 = performance.now();
-    nn.fit(x, y);
-    //var t1 = performance.now();
-    //console.log("Training took " + (t1 - t0) + " milliseconds.")
+    nn.fit(this.dataOne, this.dataTwo);
 
-    // expected output [0,1,0] = Iris-versicolor
+    const a = nn.predict([
+      this.formClassify.value.x,
+      this.formClassify.value.y,
+      this.formClassify.value.z,
+      this.formClassify.value.r,
+    ])!.data;
 
-    console.table(nn.predict([6.5, 2.8, 4.6, 1.5])!.data);
+    setTimeout(() => {
+      this.isloading = false;
+      this.isloadingResult = false;
+      const clas = [Math.round(a[0]), Math.round(a[1]), Math.round(a[2])];
+      this.results = clas;
+    }, 6000);
   }
 
   learnLinear() {
-    let nn = new MLP(x[0].length, x[0].length * 2, 3, 0.01, 500);
+    this.isloading = true;
+    this.isloadingResult = true;
+    let nn = new MLP(
+      this.dataOne[0].length,
+      this.formTraining.value.neurons,
+      3,
+      this.formTraining.value.learningReating,
+      this.formTraining.value.epochs
+    );
 
-    nn.shuffle(x, y);
+    nn.shuffle(this.dataOne, this.dataTwo);
 
-    //var t0 = performance.now();
-    nn.fit(x, y);
-    //var t1 = performance.now();
-    //console.log("Training took " + (t1 - t0) + " milliseconds.")
+    nn.fit(this.dataOne, this.dataTwo);
 
-    // expected output [0,1,0] = Iris-versicolor
+    const a = nn.predict([
+      this.formTraining.value.x,
+      this.formTraining.value.y,
+      this.formTraining.value.z,
+      this.formTraining.value.r,
+    ])!.data;
 
-    /*  console.table(nn.predict([6.5, 2.8, 4.6, 1.5])!.data); */
+    setTimeout(() => {
+      this.isloading = false;
+      this.isloadingResult = false;
+      const clas = [Math.round(a[0]), Math.round(a[1]), Math.round(a[2])];
+      this.resultTraining = clas;
+    }, 6000);
   }
 }
