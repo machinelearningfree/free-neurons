@@ -130,7 +130,7 @@ export class LinearRegressionTrainingComponent implements OnInit {
     });
 
     const history: any = [];
-    const surface = { name: 'show.history live', tab: 'Training' };
+    const surface = { name: 'Erro x Interação', tab: 'Treinamento' };
 
     await model.fit(xs, ys, {
       epochs: this.formTraining.value.epochs,

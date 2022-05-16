@@ -294,7 +294,10 @@ export class BinaryClassificationTrainingComponent implements OnInit {
       metrics: ['accuracy'],
     });
     const trainLogs: any = [];
-    const surface = { name: 'show.history live', tab: 'Training' };
+    const surface = {
+      name: 'Erro x Interação e Acurácia x Interação',
+      tab: 'Training',
+    };
     await model.fit(x_train, y_train, {
       epochs: this.formTraining.value.epochs,
       validationData: [x_val, y_val],
