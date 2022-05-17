@@ -21,6 +21,7 @@
           placeholder="Quantidade de Neurônios"
           type="number"
         />
+        <mat-hint>Quantidade de Neurônios</mat-hint>
       </mat-form-field>
 
       <mat-form-field class="example-full-width" appearance="fill">
@@ -31,6 +32,9 @@
           matInput
           placeholder="Interações"
         />
+        <mat-hint
+          >Esse parâmetro é para ser insirido a quantidade de interações
+        </mat-hint>
       </mat-form-field>
 
       <mat-form-field class="example-full-width" appearance="fill">
@@ -41,6 +45,7 @@
           formControlName="learningReating"
           type="number"
         />
+        <mat-hint>Taxa de aprendizado </mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="example-full-width">
@@ -51,6 +56,8 @@
           <mat-option value="0.3">30%</mat-option>
           <mat-option value="0.4">40%</mat-option>
         </mat-select>
+
+        <mat-hint>São os denominados dados de validação </mat-hint>
       </mat-form-field>
 
       <button
@@ -98,11 +105,13 @@
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>X</mat-label>
         <input formControlName="x" matInput type="number" />
+        <mat-hint>Dimensão x do dado que deseja classificar </mat-hint>
       </mat-form-field>
 
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Y</mat-label>
         <input formControlName="y" matInput type="number" />
+        <mat-hint>Dimensão y do dado que deseja classificar </mat-hint>
       </mat-form-field>
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Quantidade de Neurônios</mat-label>
@@ -112,6 +121,7 @@
           placeholder="Quantidade de Neurônios"
           type="number"
         />
+        <mat-hint>Quantidade de Neurônios</mat-hint>
       </mat-form-field>
 
       <mat-form-field class="example-full-width" appearance="fill">
@@ -122,6 +132,9 @@
           placeholder="Quantidade de interações"
           type="number"
         />
+        <mat-hint
+          >Esse parâmetro é para ser insirido a quantidade de interações
+        </mat-hint>
       </mat-form-field>
 
       <mat-form-field class="example-full-width" appearance="fill">
@@ -132,6 +145,7 @@
           placeholder="Learning Rate"
           type="number"
         />
+        <mat-hint>Taxa de aprendizado </mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="example-full-width">
@@ -142,6 +156,7 @@
           <mat-option value="0.3">30%</mat-option>
           <mat-option value="0.4">40%</mat-option>
         </mat-select>
+        <mat-hint>São os denominados dados de validação </mat-hint>
       </mat-form-field>
 
       <button

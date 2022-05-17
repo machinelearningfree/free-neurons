@@ -21,8 +21,8 @@
           min="0"
         />
         <mat-hint
-          >Esse parâmetro é para ser insirido o valor da amostra da base de
-          dados que você deseja utilizar para treinar
+          >Esse parâmetro é para ser insirido o valor da amostra (variável
+          independente x) da sua base de dados
         </mat-hint>
       </mat-form-field>
 
@@ -104,16 +104,17 @@
         <mat-label>Digite a amostra futura que você deseja predizer </mat-label>
         <input
           matInput
-          placeholder="Amostra da sua base de dados"
+          placeholder="Amostra para ser predita "
           value="Amostra"
           type="number"
           formControlName="variable"
           min="0"
         />
         <mat-hint
-          >Esse parâmetro é para ser insirido o valor da amostra futura que você
-          deseja predizer</mat-hint
-        >
+          >Esse parâmetro é para ser insirido o valor da amostra (variável
+          independente x) futura que você deseja encontrar o valor do
+          dado(variável dependente)
+        </mat-hint>
       </mat-form-field>
 
       <mat-form-field class="example-full-width" appearance="fill">
@@ -129,6 +130,7 @@
         <mat-hint
           >Esse parâmetro é para ser insirido a quantidade de interações
         </mat-hint>
+        <mat-hint>Escolha o erro </mat-hint>
       </mat-form-field>
 
       <mat-form-field class="example-full-width" appearance="fill">
@@ -139,6 +141,7 @@
           >
           <mat-option value="meanAbsoluteError">Erro Médio absoluto</mat-option>
         </mat-select>
+        <mat-hint>Escolha o erro </mat-hint>
       </mat-form-field>
 
       <button
@@ -158,7 +161,7 @@
         </div>
       </button>
 
-      <p class="samples">O resultado é: {{ result }}</p>
+      <p class="samples">O resultado aproximado é: {{ result }}</p>
     </form>
   </aside>
 </main>
