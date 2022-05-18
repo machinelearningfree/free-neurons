@@ -175,7 +175,7 @@ export class LinearRegressionTrainingComponent implements OnInit {
     });
 
     const history: any = [];
-    const surface = { name: 'show.history live', tab: 'Training' };
+    const surface = { name: 'Treinamento', tab: 'Training' };
 
     await model.fit(xs, ys, {
       epochs: this.formResult.value.epochs,
